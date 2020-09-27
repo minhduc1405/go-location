@@ -1,0 +1,20 @@
+server:
+  name: go-location
+  port: 8080
+
+mongo:
+  uri: mongodb://@localhost:27017
+  database: location
+
+log:
+  level: debug
+  field_map:
+    time: "@timestamp"
+    msg: message
+
+middleware_log:
+  single: true
+  status: status
+  bytes: bytes
+  request: request
+  response: response
