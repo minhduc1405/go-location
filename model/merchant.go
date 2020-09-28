@@ -1,4 +1,4 @@
-package merchant
+package model
 
 type Merchant struct {
 	Id   string `json:"id" gorm:"primaryKey"`

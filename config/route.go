@@ -11,15 +11,6 @@ func Route(r *chi.Mux, context context.Context, config Root) error {
 		return err
 	}
 
-	locationController := applicationContext.LocationController
-	locationPath := "/locations"
-	// r.Get(locationPath, locationController.All)
-	r.Get(locationPath+"", locationController.Search)
-	r.Post(locationPath+"/search", locationController.Search)
-	r.Get(locationPath+"/{id}", locationController.Load)
-	r.Post(locationPath, locationController.Insert)
-	r.Put(locationPath+"/:locationId", locationController.Update)
-
 	// user
 	userController := applicationContext.UserController
 	userParent := "/users"

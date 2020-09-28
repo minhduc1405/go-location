@@ -1,1 +1,1 @@
-# go-location
+# go-service

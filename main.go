@@ -12,11 +12,11 @@ import (
 	"os"
 	"strconv"
 
-	c "go-location/config"
+	c "go-service/config"
 )
 
 func main() {
-	parentPath := "go-location"
+	parentPath := "go-service"
 	resource := "configs"
 	env := os.Getenv("ENV")
 

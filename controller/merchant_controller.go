@@ -1,21 +1,23 @@
-package user
+package controller
 
 import (
 	"encoding/json"
 	"github.com/go-chi/chi"
+	"go-service/model"
+	"go-service/service"
 	"net/http"
 )
 
-type UserController struct {
-	service UserService
+type MerchantController struct {
+	service *service.MerchantService
 }
 
-func NewUserController(h UserService) *UserController {
-	return &UserController{h}
+func NewMerchantController(h *service.MerchantService) *MerchantController {
+	return &MerchantController{h}
 }
 
-func (c *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var req User
+func (c *MerchantController) CreateMerchant(w http.ResponseWriter, r *http.Request) {
+	var req model.Merchant
 	er1 := json.NewDecoder(r.Body).Decode(&req)
 	defer r.Body.Close()
 	if er1 != nil {
@@ -34,8 +36,8 @@ func (c *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
-func (c *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
-	var merchant User
+func (c *MerchantController) UpdateMerchant(w http.ResponseWriter, r *http.Request) {
+	var merchant model.Merchant
 	err := json.NewDecoder(r.Body).Decode(&merchant)
 	defer r.Body.Close()
 	if err != nil {
@@ -62,7 +64,7 @@ func (c *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Updated"))
 }
 
-func (c *UserController) DeleteUser(w http.ResponseWriter, r *http.Request) {
+func (c *MerchantController) DeleteMerchant(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if len(id) == 0 {
 		http.Error(w, "Id cannot be empty", http.StatusBadRequest)
@@ -78,7 +80,7 @@ func (c *UserController) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Deleted"))
 }
 
-func (c *UserController) GetAllUsers(w http.ResponseWriter, r *http.Request) {
+func (c *MerchantController) GetAllMerchants(w http.ResponseWriter, r *http.Request) {
 	result, err := c.service.All()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -90,7 +92,7 @@ func (c *UserController) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
-func (c *UserController) LoadUser(w http.ResponseWriter, r *http.Request) {
+func (c *MerchantController) LoadMerchant(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if len(id) == 0 {
 		http.Error(w, "Id cannot be empty", http.StatusBadRequest)
