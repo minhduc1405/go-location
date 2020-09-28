@@ -21,4 +21,6 @@ require (
 	github.com/teris-io/shortid v0.0.0-20171029131806-771a37caa5cf // indirect
 	go.mongodb.org/mongo-driver v1.3.3
 	gopkg.in/go-playground/validator.v9 v9.31.0 // indirect
+	gorm.io/driver/mysql v1.0.1
+	gorm.io/gorm v1.20.1
 )

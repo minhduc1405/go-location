@@ -6,6 +6,9 @@ mongo:
   uri: mongodb://@localhost:27017
   database: location
 
+sql:
+  uri: devadmin:abcd1234@/masterdata?charset=utf8&parseTime=True&loc=Local
+
 log:
   level: debug
   field_map:

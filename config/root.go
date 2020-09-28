@@ -10,6 +10,11 @@ import (
 type Root struct {
 	Server        server.ServerConfig `mapstructure:"server"`
 	Mongo         mongo.MongoConfig   `mapstructure:"mongo"`
+	Sql           SqlConfig           `mapstructure:"sql"`
 	Log           log.Config          `mapstructure:"log"`
 	MiddleWareLog chi.ChiLogConfig    `mapstructure:"middleware_log"`
+}
+
+type SqlConfig struct {
+	Uri string `mapstructure:"uri"`
 }
