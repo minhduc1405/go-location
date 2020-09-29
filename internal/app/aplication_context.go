@@ -7,7 +7,7 @@ import (
 
 	"go-service/internal/handler"
 	"go-service/internal/repository"
-	"go-service/internal/service"
+	"go-service/internal/usecase"
 )
 
 type ApplicationContext struct {
@@ -23,11 +23,11 @@ func NewApplicationContext(context context.Context, config Root) (*ApplicationCo
 	}
 	//sqlDb.AutoMigrate(merchant.Merchant{})
 	userRepository := repository.NewUserRepository(sqlDb, "users")
-	userService := service.NewUserService(userRepository)
+	userService := usecase.NewUserService(userRepository)
 	userController := handler.NewUserHandler(userService)
 
 	merchantRepository := repository.NewMerchantRepository(sqlDb, "merchants")
-	merchantService := service.NewMerchantService(merchantRepository)
+	merchantService := usecase.NewMerchantService(merchantRepository)
 	merchantController := handler.NewMerchantHandler(merchantService)
 
 	app := &ApplicationContext{

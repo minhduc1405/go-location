@@ -3,16 +3,17 @@ package handler
 import (
 	"encoding/json"
 	"github.com/go-chi/chi"
-	"go-service/internal/model"
-	"go-service/internal/service"
 	"net/http"
+
+	"go-service/internal/model"
+	"go-service/internal/usecase"
 )
 
 type MerchantHandler struct {
-	service *service.MerchantService
+	service *usecase.MerchantService
 }
 
-func NewMerchantHandler(h *service.MerchantService) *MerchantHandler {
+func NewMerchantHandler(h *usecase.MerchantService) *MerchantHandler {
 	return &MerchantHandler{h}
 }
 

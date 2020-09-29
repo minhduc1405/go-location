@@ -6,14 +6,14 @@ import (
 	"net/http"
 
 	"go-service/internal/model"
-	"go-service/internal/service"
+	"go-service/internal/usecase"
 )
 
 type UserHandler struct {
-	service *service.UserService
+	service *usecase.UserService
 }
 
-func NewUserHandler(h *service.UserService) *UserHandler {
+func NewUserHandler(h *usecase.UserService) *UserHandler {
 	return &UserHandler{h}
 }
 
