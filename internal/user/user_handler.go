@@ -1,4 +1,4 @@
-package merchant
+package user
 
 import (
 	"encoding/json"
@@ -6,16 +6,16 @@ import (
 	"net/http"
 )
 
-type MerchantController struct {
-	service MerchantService
+type UserHandler struct {
+	service UserService
 }
 
-func NewMerchantController(h MerchantService) *MerchantController {
-	return &MerchantController{h}
+func NewUserHandler(h UserService) *UserHandler {
+	return &UserHandler{h}
 }
 
-func (c *MerchantController) CreateMerchant(w http.ResponseWriter, r *http.Request) {
-	var req Merchant
+func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
+	var req User
 	er1 := json.NewDecoder(r.Body).Decode(&req)
 	defer r.Body.Close()
 	if er1 != nil {
@@ -23,7 +23,7 @@ func (c *MerchantController) CreateMerchant(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	result, err := c.service.Create(&req)
+	result, err := h.service.Create(&req)
 	if err != nil {
 		http.Error(w, er1.Error(), http.StatusInternalServerError)
 		return
@@ -34,8 +34,8 @@ func (c *MerchantController) CreateMerchant(w http.ResponseWriter, r *http.Reque
 	w.Write(response)
 }
 
-func (c *MerchantController) UpdateMerchant(w http.ResponseWriter, r *http.Request) {
-	var merchant Merchant
+func (h *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
+	var merchant User
 	err := json.NewDecoder(r.Body).Decode(&merchant)
 	defer r.Body.Close()
 	if err != nil {
@@ -52,7 +52,7 @@ func (c *MerchantController) UpdateMerchant(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	err = c.service.Update(&merchant)
+	err = h.service.Update(&merchant)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -62,13 +62,13 @@ func (c *MerchantController) UpdateMerchant(w http.ResponseWriter, r *http.Reque
 	w.Write([]byte("Updated"))
 }
 
-func (c *MerchantController) DeleteMerchant(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if len(id) == 0 {
 		http.Error(w, "Id cannot be empty", http.StatusBadRequest)
 		return
 	}
-	err := c.service.Delete(id)
+	err := h.service.Delete(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -78,8 +78,8 @@ func (c *MerchantController) DeleteMerchant(w http.ResponseWriter, r *http.Reque
 	w.Write([]byte("Deleted"))
 }
 
-func (c *MerchantController) GetAllMerchants(w http.ResponseWriter, r *http.Request) {
-	result, err := c.service.All()
+func (h *UserHandler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
+	result, err := h.service.All()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -90,14 +90,14 @@ func (c *MerchantController) GetAllMerchants(w http.ResponseWriter, r *http.Requ
 	w.Write(response)
 }
 
-func (c *MerchantController) LoadMerchant(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) LoadUser(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if len(id) == 0 {
 		http.Error(w, "Id cannot be empty", http.StatusBadRequest)
 		return
 	}
 
-	result, err := c.service.Load(id)
+	result, err := h.service.Load(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

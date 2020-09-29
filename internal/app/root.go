@@ -1,4 +1,4 @@
-package config
+package app
 
 import (
 	chi "github.com/common-go/chi-log"

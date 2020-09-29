@@ -1,4 +1,4 @@
-package config
+package app
 
 import (
 	"context"
@@ -11,7 +11,7 @@ func Route(r *chi.Mux, context context.Context, config Root) error {
 		return err
 	}
 
-	locationController := applicationContext.LocationController
+	locationController := applicationContext.LocationHandler
 	locationPath := "/locations"
 	// r.Get(locationPath, locationController.All)
 	r.Get(locationPath+"", locationController.Search)
@@ -21,7 +21,7 @@ func Route(r *chi.Mux, context context.Context, config Root) error {
 	r.Put(locationPath+"/:locationId", locationController.Update)
 
 	// user
-	userController := applicationContext.UserController
+	userController := applicationContext.UserHandler
 	userParent := "/users"
 	r.Post(userParent, userController.CreateUser)
 	r.Patch(userParent+"/{id}", userController.UpdateUser)
@@ -30,7 +30,7 @@ func Route(r *chi.Mux, context context.Context, config Root) error {
 	r.Get(userParent+"/{id}", userController.LoadUser)
 
 	// merchant
-	merchantController := applicationContext.MerchantController
+	merchantController := applicationContext.MerchantHandler
 	merchantParent := "/merchants"
 	r.Post(merchantParent, merchantController.CreateMerchant)
 	r.Patch(merchantParent+"/{id}", merchantController.UpdateMerchant)

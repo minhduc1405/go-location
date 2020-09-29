@@ -7,16 +7,16 @@ import (
 	"reflect"
 )
 
-type LocationController struct {
+type LocationHandler struct {
 	*server.GenericController
 	*server.SearchController
 }
 
-func NewLocationController(locationService LocationService, validator validator.Validator, logService server.ActivityLogService) *LocationController {
+func NewLocationHandler(locationService LocationService, validator validator.Validator, logService server.ActivityLogService) *LocationHandler {
 	modelType := reflect.TypeOf(Location{})
 	searchModelType := reflect.TypeOf(LocationSM{})
 	idGenerator := service.NewIdGenerator(false, false, false)
 	modelBuilder := service.NewModelBuilder(idGenerator, modelType, "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt")
 	genericController, searchController := server.NewGenericSearchController(locationService, modelType, modelBuilder, locationService, searchModelType, validator, logService, false, "", "")
-	return &LocationController{genericController, searchController}
+	return &LocationHandler{genericController, searchController}
 }

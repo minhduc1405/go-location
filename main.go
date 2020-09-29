@@ -12,7 +12,7 @@ import (
 	"os"
 	"strconv"
 
-	c "go-location/config"
+	c "go-location/internal/app"
 )
 
 func main() {

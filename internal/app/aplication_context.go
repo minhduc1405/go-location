@@ -1,4 +1,4 @@
-package config
+package app
 
 import (
 	"context"
@@ -10,15 +10,15 @@ import (
 	"gorm.io/gorm"
 	"reflect"
 
-	"go-location/location"
-	"go-location/merchant"
-	"go-location/user"
+	"go-location/internal/location"
+	"go-location/internal/merchant"
+	"go-location/internal/user"
 )
 
 type ApplicationContext struct {
-	LocationController *location.LocationController
-	UserController     *user.UserController
-	MerchantController *merchant.MerchantController
+	LocationHandler *location.LocationHandler
+	UserHandler     *user.UserHandler
+	MerchantHandler *merchant.MerchantHandler
 }
 
 func NewApplicationContext(context context.Context, config Root) (*ApplicationContext, error) {
@@ -42,7 +42,7 @@ func NewApplicationContext(context context.Context, config Root) (*ApplicationCo
 	}
 
 	locationService := location.NewMongoLocationService(db, mongoSearchResultBuilder, locationMapper)
-	locationController := location.NewLocationController(locationService, validator, nil)
+	locationController := location.NewLocationHandler(locationService, validator, nil)
 
 	//merchant
 	sqlUri := config.Sql.Uri
@@ -55,18 +55,18 @@ func NewApplicationContext(context context.Context, config Root) (*ApplicationCo
 	if er1 != nil {
 		return nil, er1
 	}
-	userController := user.NewUserController(userService)
+	userController := user.NewUserHandler(userService)
 
 	merchantService, er2 := merchant.NewMerchantService(sqlDb, "merchants")
 	if er2 != nil {
 		return nil, er2
 	}
-	merchantController := merchant.NewMerchantController(merchantService)
+	merchantController := merchant.NewMerchantHandler(merchantService)
 
 	app := &ApplicationContext{
-		LocationController: locationController,
-		UserController:     userController,
-		MerchantController: merchantController,
+		LocationHandler: locationController,
+		UserHandler:     userController,
+		MerchantHandler: merchantController,
 	}
 	return app, nil
 }
