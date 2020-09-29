@@ -1,22 +1,22 @@
-package controller
+package handler
 
 import (
 	"encoding/json"
 	"github.com/go-chi/chi"
-	"go-service/model"
-	"go-service/service"
+	"go-service/internal/model"
+	"go-service/internal/service"
 	"net/http"
 )
 
-type MerchantController struct {
+type MerchantHandler struct {
 	service *service.MerchantService
 }
 
-func NewMerchantController(h *service.MerchantService) *MerchantController {
-	return &MerchantController{h}
+func NewMerchantHandler(h *service.MerchantService) *MerchantHandler {
+	return &MerchantHandler{h}
 }
 
-func (c *MerchantController) CreateMerchant(w http.ResponseWriter, r *http.Request) {
+func (c *MerchantHandler) CreateMerchant(w http.ResponseWriter, r *http.Request) {
 	var req model.Merchant
 	er1 := json.NewDecoder(r.Body).Decode(&req)
 	defer r.Body.Close()
@@ -36,7 +36,7 @@ func (c *MerchantController) CreateMerchant(w http.ResponseWriter, r *http.Reque
 	w.Write(response)
 }
 
-func (c *MerchantController) UpdateMerchant(w http.ResponseWriter, r *http.Request) {
+func (c *MerchantHandler) UpdateMerchant(w http.ResponseWriter, r *http.Request) {
 	var merchant model.Merchant
 	err := json.NewDecoder(r.Body).Decode(&merchant)
 	defer r.Body.Close()
@@ -64,7 +64,7 @@ func (c *MerchantController) UpdateMerchant(w http.ResponseWriter, r *http.Reque
 	w.Write([]byte("Updated"))
 }
 
-func (c *MerchantController) DeleteMerchant(w http.ResponseWriter, r *http.Request) {
+func (c *MerchantHandler) DeleteMerchant(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if len(id) == 0 {
 		http.Error(w, "Id cannot be empty", http.StatusBadRequest)
@@ -80,7 +80,7 @@ func (c *MerchantController) DeleteMerchant(w http.ResponseWriter, r *http.Reque
 	w.Write([]byte("Deleted"))
 }
 
-func (c *MerchantController) GetAllMerchants(w http.ResponseWriter, r *http.Request) {
+func (c *MerchantHandler) GetAllMerchants(w http.ResponseWriter, r *http.Request) {
 	result, err := c.service.All()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -92,7 +92,7 @@ func (c *MerchantController) GetAllMerchants(w http.ResponseWriter, r *http.Requ
 	w.Write(response)
 }
 
-func (c *MerchantController) LoadMerchant(w http.ResponseWriter, r *http.Request) {
+func (c *MerchantHandler) LoadMerchant(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if len(id) == 0 {
 		http.Error(w, "Id cannot be empty", http.StatusBadRequest)

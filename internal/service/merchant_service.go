@@ -1,8 +1,8 @@
 package service
 
 import (
-	"go-service/model"
-	"go-service/repository"
+	"go-service/internal/model"
+	"go-service/internal/repository"
 )
 
 type MerchantService struct {

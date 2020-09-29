@@ -1,23 +1,23 @@
-package controller
+package handler
 
 import (
 	"encoding/json"
 	"github.com/go-chi/chi"
 	"net/http"
 
-	"go-service/model"
-	"go-service/service"
+	"go-service/internal/model"
+	"go-service/internal/service"
 )
 
-type UserController struct {
+type UserHandler struct {
 	service *service.UserService
 }
 
-func NewUserController(h *service.UserService) *UserController {
-	return &UserController{h}
+func NewUserHandler(h *service.UserService) *UserHandler {
+	return &UserHandler{h}
 }
 
-func (c *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
+func (c *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var req model.User
 	er1 := json.NewDecoder(r.Body).Decode(&req)
 	defer r.Body.Close()
@@ -37,7 +37,7 @@ func (c *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
-func (c *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
+func (c *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	var merchant model.User
 	err := json.NewDecoder(r.Body).Decode(&merchant)
 	defer r.Body.Close()
@@ -65,7 +65,7 @@ func (c *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Updated"))
 }
 
-func (c *UserController) DeleteUser(w http.ResponseWriter, r *http.Request) {
+func (c *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if len(id) == 0 {
 		http.Error(w, "Id cannot be empty", http.StatusBadRequest)
@@ -81,7 +81,7 @@ func (c *UserController) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Deleted"))
 }
 
-func (c *UserController) GetAllUsers(w http.ResponseWriter, r *http.Request) {
+func (c *UserHandler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	result, err := c.service.All()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -93,7 +93,7 @@ func (c *UserController) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
-func (c *UserController) LoadUser(w http.ResponseWriter, r *http.Request) {
+func (c *UserHandler) LoadUser(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if len(id) == 0 {
 		http.Error(w, "Id cannot be empty", http.StatusBadRequest)

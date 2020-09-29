@@ -1,6 +1,6 @@
 package repository
 
-import "go-service/model"
+import "go-service/internal/model"
 
 type UserRepository interface {
 	Create(model *model.User) (*model.User, error)

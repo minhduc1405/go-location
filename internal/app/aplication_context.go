@@ -1,18 +1,18 @@
-package config
+package app
 
 import (
 	"context"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	"go-service/controller"
-	"go-service/repository/sql"
-	"go-service/service"
+	"go-service/internal/handler"
+	"go-service/internal/repository"
+	"go-service/internal/service"
 )
 
 type ApplicationContext struct {
-	UserController     *controller.UserController
-	MerchantController *controller.MerchantController
+	UserHandler     *handler.UserHandler
+	MerchantHandler *handler.MerchantHandler
 }
 
 func NewApplicationContext(context context.Context, config Root) (*ApplicationContext, error) {
@@ -22,17 +22,17 @@ func NewApplicationContext(context context.Context, config Root) (*ApplicationCo
 		return nil, err
 	}
 	//sqlDb.AutoMigrate(merchant.Merchant{})
-	userRepository := sql.NewUserRepository(sqlDb, "users")
+	userRepository := repository.NewUserRepository(sqlDb, "users")
 	userService := service.NewUserService(userRepository)
-	userController := controller.NewUserController(userService)
+	userController := handler.NewUserHandler(userService)
 
-	merchantRepository := sql.NewMerchantRepository(sqlDb, "merchants")
+	merchantRepository := repository.NewMerchantRepository(sqlDb, "merchants")
 	merchantService := service.NewMerchantService(merchantRepository)
-	merchantController := controller.NewMerchantController(merchantService)
+	merchantController := handler.NewMerchantHandler(merchantService)
 
 	app := &ApplicationContext{
-		UserController:     userController,
-		MerchantController: merchantController,
+		UserHandler:     userController,
+		MerchantHandler: merchantController,
 	}
 	return app, nil
 }

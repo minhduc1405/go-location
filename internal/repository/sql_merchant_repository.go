@@ -1,7 +1,7 @@
-package sql
+package repository
 
 import (
-	"go-service/model"
+	"go-service/internal/model"
 	"gorm.io/gorm"
 )
 

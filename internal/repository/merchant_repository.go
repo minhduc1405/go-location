@@ -1,6 +1,6 @@
 package repository
 
-import "go-service/model"
+import "go-service/internal/model"
 
 type MerchantRepository interface {
 	Create(model *model.Merchant) (*model.Merchant, error)
